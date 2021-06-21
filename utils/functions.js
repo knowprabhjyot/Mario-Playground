@@ -12,6 +12,14 @@ const createPlayground = (size) => {
   return table;
 };
 
+const create2DArray = (size) => {
+    const array = [];
+    for (let i = 0 ; i < size ; i++) {
+        array[i] = new Array(parseInt(size));
+    }
+    return array;
+}
+
 const createCharacter = (id, src) => {
   const char = document.createElement("img");
   char.setAttribute("id", id);
@@ -29,20 +37,22 @@ const createMario = () => {
   td.appendChild(mario);
 };
 
-const createMushroom = (size, marioPosition) => {
-  for (let i = 0; i < size; i++) {
-    for (let j = 0; j < size; j++) {
-      const randomX = Math.floor(Math.random() * size);
-      const randomY = Math.floor(Math.random() * size);
-      const randomId = `m${randomX}${randomY}`;
-      const isPosition = getPosition(randomId);
-      if ((marioPosition.x !== randomX || marioPosition.y !== randomY) && !(isPosition)) {
-        const mushroom = createCharacter("mushroom", "assets/mushroom.png");
-        const randomPos = `${randomX}${randomY}`;
-        const pos = getPosition(randomPos);
-        mushroom.setAttribute("id", `m${randomX}${randomY}`);
-        pos.appendChild(mushroom);
-      }
+const createMultipleAsset = (array, marioPosition, prefixId) => {
+    for (let i = 0; i < array.length; i++) {
+        for (let j = 0; j < array[i].length; j++) {
+            const randomX = Math.floor(Math.random() * array.length);
+            const randomY = Math.floor(Math.random() * array.length);
+            const randomId = `${prefixId}${randomX}${randomY}`;
+            const existingAsset = array[randomX][randomY];
+            if ((marioPosition.x !== randomX || marioPosition.y !== randomY) && !(existingAsset)) {
+                const asset = (prefixId === 'm') ? createCharacter("mushroom", "assets/mushroom.png") : createCharacter("poison", "assets/poison.jpeg");
+                const randomPos = `${randomX}${randomY}`;
+                const pos = getPosition(randomPos);
+                const createdId = `${prefixId}${randomX}${randomY}`;
+                asset.setAttribute('id', createdId);
+                pos.appendChild(asset);
+                array[randomX][randomY] = createdId;
+              }
+        }
     }
-  }
-};
+}
