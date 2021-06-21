@@ -1,6 +1,4 @@
-export let position = {
+const defaultPosition = {
     x: 0,
     y: 0
 }
-
-export let 
