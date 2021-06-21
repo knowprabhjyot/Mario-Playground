@@ -1,50 +1,48 @@
 const createPlayground = (size) => {
-    const table = document.createElement('table');
-    for (let i = 0; i < size; i++) {
-        const tr = document.createElement('tr');
-        for (let j = 0; j < size;j++) {
-            const td = document.createElement('td');
-            td.setAttribute('id', `${i}$`)
-            tr.appendChild(td);
-        }
-        table.appendChild(tr);
+  const table = document.createElement("table");
+  for (let i = 0; i < size; i++) {
+    const tr = document.createElement("tr");
+    for (let j = 0; j < size; j++) {
+      const td = document.createElement("td");
+      td.setAttribute("id", `${i}${j}`);
+      tr.appendChild(td);
     }
-    return table;
-}
+    table.appendChild(tr);
+  }
+  return table;
+};
 
 const createCharacter = (id, src) => {
-    const char = document.createElement('img');
-    char.setAttribute('id', id);
-    char.setAttribute('src', src);
-    return char;
-}
+  const char = document.createElement("img");
+  char.setAttribute("id", id);
+  char.setAttribute("src", src);
+  return char;
+};
 
-const setCharacter = (element, cordinates) => {
-    const td = getPosition(cordinates);
-    td.appendChild(element);
-}
-
-const moveMario = (key) => {
-    switch(key) {
-        case 'up': 
-        setMarioPosition(position);
-        case 'down':
-            setMarioPosition(position);
-        case 'right':
-            setMarioPosition(position);
-        case 'left':
-            setMarioPosition(position);
-        default:
-            return;
-    }
-}
-
-const getPosition = (position) => {
-    return document.getElementById(`${position.x}${position.y}`);
-}
+const getPosition = (id) => {
+  return document.getElementById(id);
+};
 
 const createMario = () => {
-    const mario = createCharacter('mario', 'assets/mario.png');
-    const td = getPosition(defaultPosition);
-    td.appendChild(mario);
-}
+  const mario = createCharacter("mario", "assets/mario.png");
+  const td = getPosition(`${defaultPosition.x}${defaultPosition.y}`);
+  td.appendChild(mario);
+};
+
+const createMushroom = (size, marioPosition) => {
+  for (let i = 0; i < size; i++) {
+    for (let j = 0; j < size; j++) {
+      const randomX = Math.floor(Math.random() * size);
+      const randomY = Math.floor(Math.random() * size);
+      const randomId = `m${randomX}${randomY}`;
+      const isPosition = getPosition(randomId);
+      if ((marioPosition.x !== randomX || marioPosition.y !== randomY) && !(isPosition)) {
+        const mushroom = createCharacter("mushroom", "assets/mushroom.png");
+        const randomPos = `${randomX}${randomY}`;
+        const pos = getPosition(randomPos);
+        mushroom.setAttribute("id", `m${randomX}${randomY}`);
+        pos.appendChild(mushroom);
+      }
+    }
+  }
+};
